@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Title</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS v5.2.1 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+ <style>
+    *{
+        box-sizing: border-box;
+    }
+    body{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .container-table{
+        width: 900px;
+    }
+    table,tr,td,th{
+        border: 1px solid rgb(211, 209, 207);
+        border-collapse: collapse;
+        text-align: left;
+        
+        
+    }
+    table{
+        width: 100%;
+    }
+    tr{
+        height: 50px;
+        
+    }
+   tr td:first-child{
+    text-align: center;
+   }
+     
+    img{
+        width: 100px;
+        height: 80px;
+    }
+    input{
+    width: 50px;
+    height: 40px;
+    border: 1px solid rgb(235, 230, 230);
+
+    
+    }
+    button{
+        height: 40px;
+        width: 40px;
+        font-weight: 500;
+        border: none;
+    }
+    .add,.sub{
+      background-color: rgb(233, 238, 241);
+      border: 1px solid rgb(235, 230, 230);
+      
+    }
+    .cancel{
+        color: white;
+        background-color: red;
+        
+    }
+ </style>
+</head>
+
+<body>
+  <header>
+    <!-- place navbar here -->
+  </header>
+  <main>
+    <div class="container-table">
+
+        <table>
+          <tr>
+              <th>product image</th>
+              <th> name</th>
+              <th>quantity</th>
+              <th>price</th>
+              <th>discount</th>
+              <th>Tax</th>
+              <th>total</th>
+          </tr>
+          <tr>
+              <td><div class="img-product">
+                  <img  src="./camera.jpg" alt="">
+              </div></td>
+              <td>MASSA AST <br> color:black,Material:metal</td>
+              <td>
+                  <input type="number" value="0">
+                  <button class="add">+</button>
+                  <button class="sub">-</button>
+                  <button class="cancel">x</button>
+      
+              </td>
+              <td>$120.00</td>
+              <td>$25.00</td>
+              <td>&0.00</td>
+              <td>$0.00</td>
+          </tr>
+          <tr>
+              <td><div class="img-product">
+                  <img src="./camera.jpg" alt="">
+              </div></td>
+              <td>MASSA AST <br> color:black,Material:metal</td>
+              
+              <td >
+                  <input type="number" value="0">
+                  <button class="add">+</button>
+                  <button class="sub">-</button>
+                  <button class="cancel">x</button>
+      
+              </td>
+              <td>$7.00</td>
+              <td>$0.00</td>
+              <td>$0.00</td>
+              <td>$0.00</td>
+          </tr>
+          <tr>
+              <td><div class="img-product">
+                  <img src="./camera.jpg" alt="">
+              </div></td>
+              <td>MASSA AST <br> color:black,Material:metal</td>
+              
+              <td>
+                  <input type="number" value="0">
+                  <button class="add">+</button>
+                  <button class="sub">-</button>
+                  <button class="cancel">x</button>
+              </td>
+              <td>$120.00</td>
+              <td>$25.00</td>
+              <td>&10.00</td>
+              <td>$0.00</td>
+          </tr>
+          <tr>
+              <td colspan="6" style="text-align: right; padding: 10px;">Total Price</td>
+              <td id="total-price">$0.00</td>
+          </tr>
+          <tr>
+              <td colspan="6" style="text-align: right; padding: 10px;">Total Discount</td>
+              <td id="total-discount">$0.00</td>
+          </tr>
+          <tr>
+              <td colspan="6" style="text-align: right; padding: 10px;" >Total Tax</td>
+              <td id="total-tax">$0.00</td>
+          </tr>
+        </table>
+        </main>
+    </div>
+  <footer>
+    <!-- place footer here -->
+  </footer>
+      <script>
+    
+    var addButtons = document.querySelectorAll('.add');
+    var subButtons = document.querySelectorAll('.sub');
+    var cancelButtons = document.querySelectorAll('.cancel');
+    var rows = document.querySelectorAll('tr');
+    cancelButtons.forEach(function(button, index) {
+    button.addEventListener('click', function() {     
+      rows[index + 1].remove();           
+    });
+  });
+   
+    var quantityInputs = document.querySelectorAll('input[type="number"]');
+    var priceElements = document.querySelectorAll('td:nth-child(4)'); 
+    var discountElements = document.querySelectorAll('td:nth-child(5)');
+    var taxElements = document.querySelectorAll('td:nth-child(6)'); 
+    var totalElements = document.querySelectorAll('td:nth-child(7)'); 
+    
+    var totalPrice = 0;
+    
+    addButtons.forEach(function(button, index) {
+      button.addEventListener('click', function() {        
+        quantityInputs[index].value++;       
+        updateTotal(index);
+      });
+    });
+    
+    subButtons.forEach(function(button, index) {
+      button.addEventListener('click', function() {
+        if (quantityInputs[index].value > 0) {         
+          quantityInputs[index].value--;         
+          updateTotal(index);
+        }
+      });
+    });
+   
+    quantityInputs.forEach(function(input, index) {
+      input.addEventListener('input', function() {        
+        updateTotal(index);
+      });
+    });
+    
+    function updateTotal(index) {
+    var quantity = parseInt(quantityInputs[index].value);
+    var price = parseFloat(priceElements[index].textContent.replace('$', ''));
+    var discount = (quantity === 0) ? 0 : parseFloat(discountElements[index].textContent.replace('$', '')) || 0;
+    var tax = quantity * price * 0.125;
+    var total = quantity * price - discount + tax;
+    totalElements[index].textContent = '$' + total.toFixed(1);
+    taxElements[index].textContent = '$' + tax.toFixed(1);
+
+    calculateTotalPrice();
+  }
+   
+    function calculateTotalPrice() {
+      var total = 0;
+      var discount = 0;
+      var tax = 0;
+
+      totalElements.forEach(function(element, index) {
+        total += parseFloat(element.textContent.replace('$', ''));
+        discount += parseFloat(discountElements[index].textContent.replace('$', ''));
+        tax += parseFloat(taxElements[index].textContent.replace('$', ''));
+      });
+
+      totalDiscount = discount;
+      totalTax = tax;   
+        document.getElementById('total-price').textContent = '$' + total.toFixed(1);
+      document.getElementById('total-discount').textContent = '$' + discount.toFixed(1);
+      document.getElementById('total-tax').textContent = '$' + tax.toFixed(1);
+    }
+  
+    calculateTotalPrice();
+   
+</script>    
+
+<!-- lam theo jquery -->
+  <!-- lam theo jquery -->
+ <!-- lam theo jquery -->
+ 
+   <!-- <script src="jquery.js"></script>   -->
+  
+  <!-- Bootstrap JavaScript Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz" crossorigin="anonymous">
+  </script>
+</body>
+
+</html>
